@@ -10,14 +10,13 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    private static final String TAG = "sensor";
-    private static String BASE_URL = "http://192.168.199.217/setspeed?";
 
     private Handler mHandler = new Handler();
     private SensorManager mManager;
@@ -27,8 +26,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float[] accelerometerValues = new float[3];
     private float[] magneticFieldValues = new float[3];
 
+    private float pitch, yaw, roll;
 
-
+    private EditText etIpAddress;
 
 
     @Override
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mCompass = mManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
+        etIpAddress = (EditText) findViewById(R.id.et_ip_address);
     }
 
     /**
@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String urlStr = BASE_URL + "n=0&v=1000";
+                final String urlStr = " http://" + etIpAddress.getText().toString().trim() +
+                        "/setdirection?roll=" + roll + "&pitch=" + pitch + "&yaw=" + yaw;
                 try {
                     URL url = new URL(urlStr);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -61,14 +62,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "发送成功！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "发送成功！\n" + urlStr, Toast.LENGTH_SHORT).show();
                         }
                     }, 100);
                 } catch (Exception e) {
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, "发送失败！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "发送失败！\n" + urlStr, Toast.LENGTH_SHORT).show();
                         }
                     }, 100);
                     e.printStackTrace();
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     /**
      * 计算角度
      */
-    private  void calculateOrientation() {
+    private void calculateOrientation() {
         float[] values = new float[3];
         float[] R = new float[9];
         SensorManager.getRotationMatrix(R, null, accelerometerValues, magneticFieldValues);
@@ -101,37 +102,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // 要经过一次数据格式的转换，转换为度
         //values[0]: azimuth, rotation around the Z axis.
-        values[0] = (float) Math.toDegrees(values[0]);
-        Log.i(TAG, values[0]+"");
+        roll = (float) Math.toDegrees(values[0]);
         //values[1]: pitch, rotation around the X axis.
-        //values[1] = (float) Math.toDegrees(values[1]);
+        pitch = (float) Math.toDegrees(values[1]);
         //values[2]: roll, rotation around the Y axis.
-        //values[2] = (float) Math.toDegrees(values[2]);
-
-        if(values[0] >= -5 && values[0] < 5){
-            Log.i(TAG, "正北");
-        }
-        else if(values[0] >= 5 && values[0] < 85){
-            Log.i(TAG, "东北");
-        }
-        else if(values[0] >= 85 && values[0] <=95){
-            Log.i(TAG, "正东");
-        }
-        else if(values[0] >= 95 && values[0] <175){
-            Log.i(TAG, "东南");
-        }
-        else if((values[0] >= 175 && values[0] <= 180) || (values[0]) >= -180 && values[0] < -175){
-            Log.i(TAG, "正南");
-        }
-        else if(values[0] >= -175 && values[0] <-95){
-            Log.i(TAG, "西南");
-        }
-        else if(values[0] >= -95 && values[0] < -85){
-            Log.i(TAG, "正西");
-        }
-        else if(values[0] >= -85 && values[0] <-5){
-            Log.i(TAG, "西北");
-        }
+        yaw = (float) Math.toDegrees(values[2]);
     }
 
 
@@ -167,6 +142,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onPause();
         mManager.unregisterListener(this, mAccelerometer);
         mManager.unregisterListener(this, mCompass);
-
     }
 }
