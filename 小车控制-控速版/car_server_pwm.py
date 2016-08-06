@@ -14,7 +14,7 @@ class GetHandler(BaseHTTPRequestHandler):
 	def do_GET(self):
 		uri = urllib.parse.urlparse(self.path)
 		command = uri.path.rsplit('/', 1)[-1]
-		if command == 'setspeed':
+		if command == 'car':
 			global v,a,b
 			params = urllib.parse.parse_qsl(uri.query)
 			for key, val in params:
