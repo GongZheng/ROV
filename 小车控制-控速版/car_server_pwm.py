@@ -1,85 +1,76 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 #coding=utf-8
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-import urllib
-import time
-#import L298N_car2 as car
-import L298N_car2-pwm as car
-from abc import ABCMeta, abstractmethod 
-class DispatcherHandler(BaseHTTPRequestHandler):
-        def do_GET(self):
-                print 'client:', self.client_address, 'reuest path:', self.path, \
-                                'command:', self.command
-                #query = urllib.splitquery(self.path)
-                query= self.path.split('?', 1)
-                action = query[0]
-                params = {}
-                if len(query) == 2:
-                        for key_value in query[1].split('&'):
-                                kv = key_value.split('=')
-                                if len(kv) == 2:
-                                        params[kv[0]] = urllib.unquote(kv[1]).decode("utf-8", "ignore") 
-                runCar = RunCar()
-                buf = {}
-                if self.path.startswith("/car?"):
-                        buf["return"] = runCar.action(params)
-                else:
-                        buf["return"] = -1
-                self.protocal_version = "HTTP/1.1"
-                self.send_response(200)
-                self.send_header("Content-type", "application/json; charset=UTF-8")
-                #self.send_header("Content-type", "test/html; charset=UTF-8")
-                self.send_header("Pragma", "no-cache")
-                self.send_header("Cache-Control", "no-cache")
-                self.end_headers()
-                self.wfile.write(buf) 
-        def do_POST(self):
-                self.send_error(404) 
-class Job():
-        __metaclass__ = ABCMeta
-        @abstractmethod
-        def action(self, params):
-                pass
-class RunCar(Job):
-        def __init__(self):
-                car.init()
-                car.reset()
-        #子类必须实现父类的抽象方法，否则实例化时会报错
-        def action(self, params):
-                print params
-                act = int(params['a'])
-                if act == 1:
-                        car.forward()
-                        return 1
-                if act == 2:
-                        car.back()
-                        return 2
-                if act == 3:
-                        car.front_left_turn()
-                        return 3
-                if act == 4:
-                        car.front_right_turn()
-                        return 4
-                if act == 5:
-                        car.rear_left_turn()
-                        return 5
-                if act == 6:
-                        car.rear_right_turn()
-                        return 6
-                if act == 0:
-                        car.stop()
-                        return 0
-                else:
-                        return -1 
-if __name__ == "__main__":
-        PORT_NUM = 8899
-        serverAddress = ("", PORT_NUM)
-        server = HTTPServer(serverAddress, DispatcherHandler)
-        print 'Started httpserver on port: ', PORT_NUM
-        try:
-                server.serve_forever() 
-        except KeyboardInterrupt, e:
-                pass
-        finally:
-                server.socket.close()
-                print 'Exit...' 
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import RPi.GPIO as GPIO
+import L298N_car2_pwm as car
+import time, signal, urllib.parse, threading, sys, shutil, copy, io, socket, struct, serial, math
+
+
+# Global variables for motors
+v = 50
+a = 0
+# 处理控制端发来的HTTP GET请求，现在只有一个指令setspeed
+class GetHandler(BaseHTTPRequestHandler):
+	def do_GET(self):
+		uri = urllib.parse.urlparse(self.path)
+		command = uri.path.rsplit('/', 1)[-1]
+		if command == 'setspeed':
+			global v,a,b
+			params = urllib.parse.parse_qsl(uri.query)
+			for key, val in params:
+				if key == 'v':
+					v = int(val)
+				elif key == 'a':
+					a = int(val)
+			self.send_response(200)
+			self.end_headers()
+			self.wfile.write(bytes(command, 'UTF-8'))
+		else:
+			self.send_response(404)
+			self.end_headers()
+			self.wfile.write(bytes('File Not Found', 'UTF-8'))
+		return
+
+
+# 这个线程简单的调整电机的速度
+class MotorThread(threading.Thread):
+	def run(self):
+		global v,a,b
+		car.init()
+		car.reset()
+		while True:
+			car.setDC(v)
+			if (a == 0):
+				car.stop()
+			elif (a==1):
+				car.forward()
+			elif (a==2):
+				car.back()
+			elif (a==3):
+				car.front_left_turn()
+			elif (a==4):
+				car.front_right_turn()
+			elif (a==5):
+				car.rear_left_turn()
+			elif (a==6):
+				car.rear_right_turn()
+			else:
+				car.stop()
+			time.sleep(0.1)
+def main():
+	print('Starting Motor Processor...')
+	mthread = MotorThread()
+	mthread.daemon = True
+	mthread.start()
+	print('Starting Operational Interface...')
+	server = HTTPServer(('0.0.0.0', 80), GetHandler)
+	server.serve_forever()
+
+def exit(signum, frame):
+	print('\nExiting from exit()...')
+	GPIO.cleanup()
+	sys.exit(1)
+
+if __name__ == '__main__':
+	signal.signal(signal.SIGINT, exit)
+	main()

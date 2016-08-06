@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 #coding=utf-8
 import RPi.GPIO as GPIO
 import time 
@@ -7,7 +7,7 @@ import time
 前轮驱动：18-ENDB, 22-ENDA, 11-左前前, 13-左前后, 15-右前前, 29-右前后
 后轮驱动：38-ENDB, 40-ENDA, 31-左后前, 33-左后后, 35-右后前, 37-右后后
 '''
-Frequncy = 250
+Frequncy = 100
 DC = 50
 front_left = 0
 front_right = 0
@@ -143,6 +143,8 @@ def forward():
         front_right_forward()
         rear_left_forward()
         rear_right_forward()
+        #time.sleep(0.1)
+        #reset()
 # 后退，4轮全部向后转
 def back():
         reset()
@@ -150,6 +152,8 @@ def back():
         front_right_back()
         rear_left_back()
         rear_right_back()
+        #time.sleep(0.1)
+        #reset()
 # 前向左转，右边两个轮子向前转
 def front_left_turn():
         reset()
@@ -157,8 +161,8 @@ def front_left_turn():
         rear_right_forward()
         front_left_stay()
         rear_left_stay()
-        time.sleep(0.3)
-        reset()
+        #time.sleep(0.1)
+        #reset()
 # 前向右转
 def front_right_turn():
         reset()
@@ -166,8 +170,8 @@ def front_right_turn():
         rear_left_forward()
         front_right_stay()
         rear_right_stay()
-        time.sleep(0.3)
-        reset()
+        #time.sleep(0.1)
+        #reset()
 # 后向左转
 def rear_left_turn():
         reset()
@@ -175,8 +179,8 @@ def rear_left_turn():
         front_left_back()
         front_right_stay()
         rear_right_stay()
-        time.sleep(0.3)
-        reset()
+        #time.sleep(0.1)
+        #reset()
 # 后向右转
 def rear_right_turn():
         reset()
@@ -184,8 +188,8 @@ def rear_right_turn():
         front_right_back()
         front_left_stay()
         rear_left_stay()
-        time.sleep(0.3)
-        reset()
+        #time.sleep(0.1)
+        #reset()
 # 停止
 def stop():
         reset()
