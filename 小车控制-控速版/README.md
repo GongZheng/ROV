@@ -1,4 +1,4 @@
- #pi上小车被控端的安装  
+#pi上小车被控端的安装  
  sudo apt-get update  
  sudo apt-get install python3 python3-dev python3-setuptools python3-serial  
  sudo apt-get install pigpio  
@@ -18,7 +18,7 @@
 sudo python3 setup.py install  
   
 将car_server_pwm.py和L298N_car2_pwm放在pi上，运行脚本
-##sudo python3 car_server_pwm.py  
+sudo python3 car_server_pwm.py  
 然后向pi发起url请求：pi的ip地址/car?v=(速度1-100)&a=1（0、1、2、3、4、5、6）进行控制  
 参考于这篇文章http://www.sjsjw.com/100/005531MYM025948/  
 
