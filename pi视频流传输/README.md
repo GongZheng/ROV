@@ -1,11 +1,6 @@
 Pi的视频流传输
 =============
-pi端和pc端对应文件关系
--------------------
-	pi_client                        pc_server
-    process_client.py                nodejs/server.js
-安装与测试
-----------
+##安装与测试
 ###pi或ubuntu上安装opencv3.1版本
    pi或ubuntu上安装opencv的编译安装过程具体看[这里。](http://blog.csdn.net/linj_m/article/details/45048905)
    opencv-3.1.00zip的包已经放在了项目的[文件](https://coding.net/u/gongz/p/ROV/attachment)中。
