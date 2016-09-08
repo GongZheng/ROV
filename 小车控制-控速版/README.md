@@ -22,6 +22,6 @@ sudo python3 car_server_pwm.py
 然后向pi发起url请求：pi的ip地址/car?v=(速度1-100)&a=1（0、1、2、3、4、5、6）进行控制  
 参考于这篇文章http://www.sjsjw.com/100/005531MYM025948/  
 
-#控制端页面 
+#控制端页面  
 控制端页面.html、jquery.js两个两个文件 
 修改控制端页面.html中的ip为pi对应的ip:端口，即可实现小车控制。
