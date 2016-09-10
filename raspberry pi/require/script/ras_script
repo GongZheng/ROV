@@ -5,6 +5,7 @@ cat ./interfaces > /etc/network/interfaces
 
 systemctl daemon-reload
 service networking restart
+sudo systemctl restart networking.service
 
 #树莓派源列表 http://www.raspbian.org/RaspbianMirrors
 cp ./sources.list /etc/apt/
@@ -16,4 +17,4 @@ apt-get install python3
 apt-get install g++
 
 cp /etc/systemd/system/default.target /lib/systemd/system/multi-user.target
-echo "Created symlink from /etc/systemd/system/default.target to /lib/systemd/system/multi-user.target.:
+echo "Created symlink from /etc/systemd/system/default.target to /lib/systemd/system/multi-user.target.“
