@@ -11,10 +11,10 @@ import base64
 def camera(address,camID): #提前摄像头并传输给服务器
 	sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	sock.connect(address)   #建立连接address为ip和端口
-	capture = cv2.VideoCapture(camID)  #打开摄像头 
+	capture = cv2.VideoCapture(camID)  #打开摄像头
 	ret, frame = capture.read()        #抓取摄像头一帧
 	encode_param=[int(cv2.IMWRITE_JPEG_QUALITY),90] #参数
-	print 'cam%d on'%camID 
+	print ('cam%d on'%camID)
 	while ret:
 		result, imgencode = cv2.imencode('.jpg', frame, encode_param) #编码
 		data = numpy.array(imgencode) #转换为矩阵
@@ -22,7 +22,9 @@ def camera(address,camID): #提前摄像头并传输给服务器
 		c = str(camID);
 		#sock.send( (str(len(stringData)).encode("utf-8")).ljust(16)); #发送字符串流的大小(转换为16字节大小)
 		sock.send( base64.b64encode(stringData)+b';'+c.encode("utf-8"))                                      #发送字符串流
-		ret, frame = capture.read()                                   #抓取下一帧
+		print ("read")
+		ret, frame = capture.read()
+		print ("read end")                                  #抓取下一帧
 		#decimg=cv2.imdecode(data,1)
 		#cv2.imshow('CLIENT',decimg)
 		if cv2.waitKey(100) == 27:                   #等待
