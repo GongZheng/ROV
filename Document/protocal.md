@@ -6,6 +6,8 @@
 ----------  |----------
 RMD  |  远程可操作移动监控设备
 CTN   |  控制端
+E(key, message) | 使用key作为密钥加密message
+C(key, message) | 使用key作为密钥解密message
 
 
 ## API设计 ##
@@ -34,7 +36,8 @@ alert       |   10045   |  tcp  | 树莓派遭遇紧急情况需要报告 |
 ------------|--------|-------|---------
 ID          |   string   |  设备标识 | 
 available_network   |   json    |   维护一个可用网络列表  |   {   "network_list":[...]}
-private_key |   --- |   私钥  |
+~~private_key~~ |   --- |   私钥  |
+user_key    |   string  | 用户对称密钥 |
 
 ### 应用端(CTN) ###
 
@@ -42,23 +45,57 @@ private_key |   --- |   私钥  |
 ------------|--------|-------|---------
 available_device   |   json    |   维护一个可用设备列表  |    {  "device_list":[...] }
 network_device  |   json | 记录网络下拥有的设备   | {  "bssid":[...]   }
-*device_pk*   |   json    | 设备-公钥对应列表 | { "device.id":"device.pk" }
+~~device_pk~~   |   json    | 设备-公钥对应列表 | { "device.id":"device.pk" }
+user_key    |   string  | 用户对称密钥 |
 
 ## 信息传递机制 ##
 ### 探测 ###
 #### probe ####
 ```sequence
-CTN->RMD: (broadcast)probe
+CTN->RMD: (broadcast){ message = E(user_key, "probe"+time) }
+Note right of RMD: "probe",time = C(user_key, message)
+Note right of RMD: abs(time-now()) < 10s
 RMD-->CTN: {  "device_id":RMD.ID }
 ```
 
-### 认证 ###
+### 存活检测 ###
+#### heartcount ####
+```sequence
+CTN->RMD: { message = E(user_key, "heartcount"+time) }
+Note right of RMD: "heartcount",time = C(user_key, message)
+Note right of RMD: abs(time-now()) < 10s
+RMD-->CTN: {  "device_id":RMD.ID }
+```
+
+### 运动控制 ###
+#### action_control ####
+```sequence
+CTN->RMD: { message = E(user_key, "action_control apply"+time) }
+Note right of RMD: "action_control apply",time = C(user_key, message)
+Note right of RMD: abs(time-now()) < 10s
+Note right of RMD: idle or busy
+RMD-->CTN: {  "action_control status":["yes", "no"] }
+CTN-->RMD: { "action":["up","down","left","right"] }
+```
+
+```flow
+st=>start: Start
+e=>end: End
+op1=>operation: CTN发送控制请求
+cond=>condition: RMD判断是否合法 Yes or No?
+io=>inputoutput: 传送控制序列
+st->op1->cond
+cond(yes)->io->e
+cond(no)->e
+```
+
+<!-- ### 认证 ###
 #### auth ####
 ```sequence
 CTN->RMD: auth apply
 RMD-->CTN: {  "device_id":RMD.ID }
 ```
-
+ -->
 
 ## 参考资料 ##
 
