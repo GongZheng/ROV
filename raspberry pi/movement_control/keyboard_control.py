@@ -12,7 +12,8 @@ import threading
 import sys
 import sys,tty,termios
 
-import two_wheel_device
+
+from two_wheel_device import TwoWheelDevice as Car
 
 class KeyEventThread(threading.Thread):
     def __init__(self, car):
