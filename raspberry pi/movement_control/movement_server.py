@@ -40,8 +40,6 @@ class MovementServer(object):
 		GPIO.cleanup()
 		sys.exit(1)
 
-    
-
 
 
 

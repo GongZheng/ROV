@@ -27,7 +27,7 @@
         });
 
     var v = 50;
-    ip='192.168.1.169:8080'
+    ip='192.168.1.169:81'
     function aka(value){
         v=value;
         var showspeed=document.getElementById ("showspeed");
@@ -117,7 +117,7 @@
 <img id="video">
 <img id="video1">
  <div class="align-center">
-        ip<input type="text" name="ip" id="ip" value="192.168.1.169" onchange="changip(this.value)" /></br>
+        ip<input type="text" name="ip" id="ip" value="192.168.1.169:81" onchange="changip(this.value)" /></br>
         0<input type="range" name="trackBar" id="trackBar" max="100" min="0" defaultValue="50" onchange="aka(this.value)" />100
         </br>speed:<span id="showspeed">50</span>% &nbsp <span id="showop">car:停止</span>
         <table class="table" >

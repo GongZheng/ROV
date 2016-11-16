@@ -33,7 +33,7 @@ def camera(address,camID): #提前摄像头并传输给服务器
 	cv2.destroyAllWindows()     #关闭cv窗口,可无
 
 def main():
-	address = ('192.168.1.176', 8001) #服务器接收端地址
+	address = ('192.168.1.114', 8001) #服务器接收端地址
 	# 创建新进程
 	process0 = multiprocessing.Process(target = camera, args = (address,0,))
 	process1 = multiprocessing.Process(target = camera, args = (address,1,))
