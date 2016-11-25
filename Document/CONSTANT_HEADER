@@ -1,0 +1,18 @@
+//常量文档
+
+//通讯状态
+//status
+STATUS_OK = 100 // OK
+
+
+
+
+//动作类型
+//action_type	
+ACTION_FORWARD = 1
+ACTION_BACKWARD = 2
+ACTION_LEFT = 3
+ACTION_RIGHT = 4
+ACTION_UPLEFT = 5
+ACTION_UPRIGHT = 6
+
