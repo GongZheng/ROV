@@ -21,7 +21,7 @@ apt-get install python3
 apt-get install g++
 apt-get install cmake
 
-apt-get install ,libswscale-dev
+apt-get install libswscale-dev
 
 cp /etc/systemd/system/default.target /lib/systemd/system/multi-user.target
 echo "Created symlink from /etc/systemd/system/default.target to /lib/systemd/system/multi-user.target."
@@ -38,17 +38,17 @@ echo "Created symlink from /etc/systemd/system/default.target to /lib/systemd/sy
 # http://tieba.baidu.com/p/3418475592
 
 
-# libavcodec 安装
-apt-get install libavcodec-dev
+# # libavcodec 安装
+# apt-get install libavcodec-dev
 
-# 在树莓派中编译camkit  ,其中-DPLATFORM=RPI是说明该环境是树莓派环境
-cp camkit
-mkdir build
-cd build
-cmake ../ -DPLATFORM=RPI
-make
-make install
+# # 在树莓派中编译camkit  ,其中-DPLATFORM=RPI是说明该环境是树莓派环境
+# cp camkit
+# mkdir build
+# cd build
+# cmake ../ -DPLATFORM=RPI
+# make
+# make install
 
-＃测试是否安装成功，安装成功后，进入build/src
-cd src
-./cktool -?
+# ＃测试是否安装成功，安装成功后，进入build/src
+# cd src
+# ./cktool -?
