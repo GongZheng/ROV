@@ -31,7 +31,7 @@ Camkit采用**cmake**构建系统，编译之前请确认已经安装了cmake。
 
     
 
-在Linux上编译安装非常简单，以Ubuntu为例，首先安装编译环境:
+在树莓派上安装很简单，首先安装编译环境:
 
     ```
     sudo apt-get install cmake libavcodec54 libavcodec-dev libswscale2 libswscale-dev libavutil52 libavutil-dev #库的版本号可有会有变化，请根据不同的系统做调整
@@ -54,27 +54,6 @@ Camkit采用**cmake**构建系统，编译之前请确认已经安装了cmake。
     
 安装完成将在你的电脑上创建3种文件：1. `cktool`工具；2. `libcamkit.so`库，3.开发头文件。程序的默认安装路径为`/usr/local`，可通过在构建时添加`-DCMAKE_INSTALL_PREFIX=where`选项指定其他路径。
 
-#### 树莓派平台编译安装
-
-要在树莓派上使用可以选择在PC上交叉编译，也可将源代码拷到树莓派上直接编译，这里介绍后一种方式。
-
-首先用`scp`之类的工具将Camkit的源代码拷到树莓派上，进入源码目录。由于树莓派运行的也是Linux系统，原则上可以和PC上一样使用ffmpeg库，但是实际效果非常卡顿，每秒仅有1~2帧，cpu消耗90%左右，因此推荐使用针对树莓派的GPU加速方案，下面是编译说明。
-
-使用GPU加速需要一些头文件和库，这些库一般都在`/opt/vc/`目录下，不需要另外安装。
-
-编译过程非常简单，进入Camkit源码目录，使用如下命令编译安装：
-
-    ``` 
-    mkdir build
-    cd build
-    cmake ../ -DPLAT=RPI
-    make 
-    make install
-    ```
-    
-这样，Camkit就已经安装到你的树莓派上了，路径和PC上的相同。
-
-#### 飞思卡尔平台编译安装
 
 待写
 
