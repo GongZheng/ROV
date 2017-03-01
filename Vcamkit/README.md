@@ -6,35 +6,12 @@ Camkit是一个摄像头相关的工具箱，使用C语言写成，包含了从�
 ### 编译
 
 Camkit采用**cmake**构建系统，编译之前请确认已经安装了cmake。
-
-遵循以下步骤完成编译和安装：
-
-    ```shell
-    cd Camkit_source_dir
-    mkdir build
-    cd build
-    cmake ../ 
-    make
-    make install
-    ```
- 
-    ```
-    sudo apt-get install cmake libavcodec54 libavcodec-dev libswscale2 libswscale-dev libavutil52 libavutil-dev openssl libssl-dev
-    #库的版本号可有会有变化，请根据不同的系统做调整
-    
-    安装rtmpdump
-    git clone git://git.ffmpeg.org/rtmpdump
-    cd rtmpdump
-    make
-    sudo make install
-    ```
-
     
 
 在树莓派上安装很简单，首先安装编译环境:
 
     ```
-    sudo apt-get install cmake libavcodec54 libavcodec-dev libswscale2 libswscale-dev libavutil52 libavutil-dev #库的版本号可有会有变化，请根据不同的系统做调整
+    sudo apt-get install cmake  libavcodec-dev  libswscale-dev  libavutil-dev #库的版本号可有会有变化，请根据不同的系统做调整
     
     安装rtmpdump
     git clone git://git.ffmpeg.org/rtmpdump
