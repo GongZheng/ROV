@@ -27,7 +27,7 @@ Camkit采用**cmake**构建系统，编译之前请确认已经安装了cmake。
     cd build
     cmake ../
     make 
-    make install
+  sudo   make install
     ```
     
 安装完成将在你的电脑上创建3种文件：1. `cktool`工具；2. `libcamkit.so`库，3.开发头文件。程序的默认安装路径为`/usr/local`，可通过在构建时添加`-DCMAKE_INSTALL_PREFIX=where`选项指定其他路径。
