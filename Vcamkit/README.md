@@ -14,6 +14,7 @@ Camkit采用**cmake**构建系统，编译之前请确认已经安装了cmake。
     sudo apt-get install cmake  libavcodec-dev  libswscale-dev  libavutil-dev #库的版本号可有会有变化，请根据不同的系统做调整
     
     安装rtmpdump
+    sudo apt-get install libssl-dev
     git clone git://git.ffmpeg.org/rtmpdump
     cd rtmpdump
     make
