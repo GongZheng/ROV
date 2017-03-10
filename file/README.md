@@ -7,6 +7,9 @@
     python manage.py runserver 0.0.0.0:8000
     ```
 这样就可以启动项目。
+
+
+
 注意：
     
    token.txt 文件不能删除。用于存储token的
