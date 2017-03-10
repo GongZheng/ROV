@@ -21,7 +21,7 @@
   <table>
     <tr>
       <td>
-        <form action="{{ request.build_absolute_uri }}upload/" method="POST" enctype="multipart/form-data">
+        <form action="{{ request.build_absolute_uri }}upload2/" method="POST" enctype="multipart/form-data">
 	  {% csrf_token %}
           <input type="file" name="file"/>
           <br />
@@ -30,7 +30,7 @@
       </td>
     </tr>
   </table>
- 
+
 </body>
  
 </html>

@@ -20,5 +20,9 @@ from one import views as filetest
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', filetest.index),
-    url(r'^upload/', filetest.upload),
+    url(r'^upload', filetest.upload),
+    url(r'^upload2/', filetest.upload2),
+    url(r'^tk', filetest.get_token),
+    url(r'^file', filetest.file_index),
+
 ]
