@@ -1468,7 +1468,6 @@
 					try {
 						token = eval("(" + xhr.responseText + ")").token;
 						server = eval("(" + xhr.responseText + ")").server;
-						fShowMessage(token,true);
 					} catch(e) {}
 					if (token) {
 						if(server != null && server != "") {
@@ -1481,7 +1480,7 @@
 					} else {
 						/** not found any token */
 						self.cancelOne(index);
-						var msg = "\u521B\u5EFA\u4E0A\u4F20\u4EFB\u52A1\u5931\u8D25[tokenURL  lzj  ="+token + self.get("tokenURL") + "],\u72B6\u6001\u7801:" + xhr.status;
+						var msg = "\u521B\u5EFA\u4E0A\u4F20\u4EFB\u52A1\u5931\u8D25[tokenURL] ="+token + self.get("tokenURL") + "],\u72B6\u6001\u7801:" + xhr.status;
 						fShowMessage(msg, true);
 					}
 				} catch(e) {

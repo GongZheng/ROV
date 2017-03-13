@@ -82,7 +82,7 @@ def get_token(request):
             data = { 'name':name, 'size':size, 'token':mytoken, 'success':True, 'message':''}
             return HttpResponse(json.dumps(data))
         else:
-            data = { 'name':name, 'size':size, 'token':'111', 'success':True, 'message':''}
+            data = { 'name':name, 'size':size, 'token':'111', 'success':False, 'message':'file has existed'}
             return HttpResponse(json.dumps(data))
 
 
