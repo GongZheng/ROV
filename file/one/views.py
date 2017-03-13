@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import HttpResponse
 import os
+import models
 import uuid
 import json
 import numpy
@@ -49,6 +50,8 @@ def upload(request):
         token = request.GET.get('token','')
         size = request.GET.get('size',0)
         fileName = request.GET.get('name','')
+        if token == '111':
+	    return HttpResponse(json.dumps({'error get': 'file has existed'}))
         if has_token(token):
             fileTemp = handle_file(token,fileName)
             fileTemp.seek(0,2)
@@ -72,39 +75,26 @@ def get_token(request):
     if request.method == 'GET':
         name = request.GET.get('name', '')
         size = request.GET.get('size', 0)
-        token = hash(name + size)
-        save_token(token)
-        data = { 'name':name, 'size':size, 'token':token, 'success':True, 'message':''}
-        return HttpResponse(json.dumps(data))
+        mytoken = hash(name + size)
+	if not has_token(mytoken):
+            obj = models.filetoken(token = mytoken )
+            obj.save()
+            data = { 'name':name, 'size':size, 'token':mytoken, 'success':True, 'message':''}
+            return HttpResponse(json.dumps(data))
+        else:
+            data = { 'name':name, 'size':size, 'token':'111', 'success':True, 'message':''}
+            return HttpResponse(json.dumps(data))
 
-
-''' 存储token，用于后续的校验'''
-def save_token(token):
-    tokenStr  =  str(token)
-    with open('token.txt','r') as r:
-        txt = r.read()
-    if txt == '' :
-        txt  = txt + tokenStr
-    else :
-        arr = txt.split(',')
-	for one in arr:
-	    if one == tokenStr:
-                return
-        txt = txt + ',' +  tokenStr
-
-    with open('token.txt','w') as w:
-        w.write(txt)
 
 ''' 校验token '''
 def has_token(token):
+    tokens = models.filetoken.objects.all().values('token') 
     tokenStr  =  str(token)
-    with open('token.txt','r') as r:
-        txt = r.read()
-    arr = txt.split(',')
-    for one in arr:
-         if one == tokenStr:
-            return True
+    for temp in tokens:
+        if temp['token'] == tokenStr:
+            return True 
     return False
+
 
 ''' ----------------------分割线-------------------------'''
 def index(request):
