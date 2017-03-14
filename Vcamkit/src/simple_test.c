@@ -22,8 +22,8 @@ U32 ofmt = V4L2_PIX_FMT_YUV420;
 char *deviceOne = "/dev/video0";
 char *deviceTwo = "/dev/video1";
 
-char *oneIp = "192.168.0.101";
-char *twoIp = "192.168.0.101";
+char *oneIp = "192.168.1.176";
+char *twoIp = "192.168.1.176";
 int onePort = 8888;
 int twoPort = 8000;
 

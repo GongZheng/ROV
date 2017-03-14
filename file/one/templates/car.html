@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+<meta charset="UTF-8">
+<script src="/static/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var v = 50;
+    ip='192.168.1.169:8080'
+    function aka(value){
+    	v=value;
+    	var showspeed=document.getElementById ("showspeed");
+    	showspeed.innerHTML = v;
+    }
+
+    function changip(ipaddress){
+    	ip=ipaddress;
+    }
+    function aa(v,a) {
+        $.ajax({
+            url: "http://"+ip+"/car",
+            data: "v="+v+"&a="+a,
+            type: "get",
+            processData: false,
+            timeout: 15000,
+            dataType: "text",   //not "json" we'll parse
+            jsonp: "jsonpcallback",
+            success: function(result,state) {
+            	//alert(result+":"+state);
+            	var showop=document.getElementById ("showop");
+    			showop.innerHTML = result;
+            }
+        });
+    }
+
+    document.onkeydown = chang_page;
+    document.onkeyup = stop;
+    function chang_page(e) {
+    	e = e||event;
+        if(e.keyCode == 87){ //w forward
+        	aa(v,1);
+        }
+        else if(e.keyCode == 83){ //s rear
+        	aa(v,2);
+        }
+        else if(e.keyCode == 81){ //q forward-left
+        	aa(v,3);
+        }
+        else if(e.keyCode == 69){ //e forward-right
+        	aa(v,4);
+        }else if(e.keyCode == 65){ //a rear-left
+        	aa(v,5);
+        }
+        else if(e.keyCode == 68){ //d rear-right
+        	aa(v,6);
+        }else{
+        	aa(0,0)
+		}
+    }
+
+    function stop(e) {
+    	e = e||event;
+    	aa(0,0);
+    }
+</script>
+    <title></title>
+<style type="text/css"> 
+.align-center{ 
+	margin:20% auto; /* 居中 这个是必须的，，其它的属性非必须 */ 
+	text-align:center; /* 文字等内容居中 */ 
+} 
+
+.table{ 
+	margin:0 auto;
+	width: 50%;
+	height:100px;
+} 
+.b{
+	 border-right: #6a6a6a 1px solid;   
+	 padding-right: 10px;    
+	 border-top: #fff 1px solid; 
+	 padding-left: 10px; font-size: 14px;    
+	 background: #d32c47;    
+	 padding-bottom: 3px;    
+	 border-left: #fff 1px solid;    
+	 cursor: pointer;    
+	 color: #fff;    
+	 padding-top: 3px;   
+	 border-bottom: #6a6a6a 1px solid;   
+	 height: 100px;
+	 width:100%;
+}
+
+</style>
+</head>
+<body> 
+        <div class="align-center">
+         <object classid="clsid:E23FE9C6-778E-49D4-B537-38FCDE4887D8" codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab"     
+            width="640" height="480" events="True" id="vlc2">     
+        <param name="MRL" value="udp://@239.255.1.1:1234" />     
+        <param name="ShowDisplay" value="True" />     
+        <param name="Loop" value="False" />     
+        <param name="AutoPlay" value="True" />     
+        <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"    
+               width="640"    
+               height="480"    
+               id="vlc">    
+        </embed>
+        </object>  
+        <object classid="clsid:E23FE9C6-778E-49D4-B537-38FCDE4887D8" codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab"     
+            width="640" height="480" events="True" id="vlc3">     
+        <param name="MRL" value="udp://@239.255.1.1:1234" />     
+        <param name="ShowDisplay" value="True" />     
+        <param name="Loop" value="False" />     
+        <param name="AutoPlay" value="True" />     
+        <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org"    
+               width="640"    
+               height="480"    
+               id="vlc1">    
+        </embed>
+        </object>  
+        </br>  
+        ip<input type="text" name="ip" id="ip" value="192.168.1.169" onchange="changip(this.value)" /></br>
+        0<input type="range" name="trackBar" id="trackBar" max="100" min="0" defaultValue="50" onchange="aka(this.value)" />100
+        </br>speed:<span id="showspeed">50</span>% &nbsp <span id="showop">car:停止</span>
+        <table class="table" >
+		  <tr>
+		    <td><input class="b" id="Buttonfl" type="button" value="前左" onmousedown="aa(v,3)" onmouseup="aa(0,0)" /></td>
+		    <td><input class="b" id="Buttonf" type="button" value="前进" onmousedown="aa(v,1)" onmouseup="aa(0,0)" /></td>
+		    <td><input class="b" id="Buttonfr" type="button" value="前右" onmousedown="aa(v,4)" onmouseup="aa(0,0)" /></td>
+		  </tr>
+		  <tr>
+		    <td><input class="b" id="Buttonrl" type="button" value="后左" onmousedown="aa(v,5)" onmouseup="aa(0,0)" /></p></td>
+		    <td><input class="b" id="Buttonr" type="button" value="后退" onmousedown="aa(v,2)" onmouseup="aa(0,0)" /></p></td>
+		    <th><input class="b" id="Buttonrr" type="button" value="后右" onmousedown="aa(v,6)" onmouseup="aa(0,0)" /></p></th>
+		  </tr>
+		</table>
+		</div>
+        <script language="Javascript">    
+        var vlc = document.getElementById("vlc");    
+        var mrl="/static/js/video.sdp";   
+        //将地址添加到播放列表    
+        vlc.playlist.add(mrl);    
+        //播放    
+        vlc.playlist.play();  
+
+        var vlc1 = document.getElementById("vlc1");    
+        var mrl1="static/js/video1.sdp";   
+        //将地址添加到播放列表    
+        vlc1.playlist.add(mrl1);    
+        //播放    
+        vlc1.playlist.play();  
+        </script>   
+		<!--<iframe src="http://127.0.0.1:8090/?action=stream_0">  </iframe>>
+</body>
+</html>

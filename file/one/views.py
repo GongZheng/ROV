@@ -3,9 +3,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import HttpResponse
 import os
-import models
 import uuid
 import json
+import models
 import numpy
 @csrf_exempt
 def upload(request):
@@ -20,13 +20,13 @@ def upload(request):
         rangeFrom = tempStr[0].split('-')[0]
         rangeSize = tempStr[1]
         rangeTo = tempStr[0].split('-')[1]
-        print rangeFrom + '- ' +rangeTo
+       
        # 验证有效的token，如果token有效，说明允许上传文件 
         uploadFile = handle_file(token,fileName)
         if uploadFile != None:
             uploadFile.seek(0,2)
             fileSize = uploadFile.tell()
-            print fileSize
+           
             if int(fileSize) != int(rangeFrom):
                	return HttpResponse(json.dumps({'error post': 'filesize != range    '+ str( fileSize)}))
             for r in request.read():
@@ -35,7 +35,7 @@ def upload(request):
             ''' 上传文件后，返回文件大小，通知客户端是否继续上传，或完成'''
             fileSize = uploadFile.tell()
             uploadFile.close()
-            print fileSize
+            
             data = {'start':fileSize, 'success':True, 'message':''}
             
             response = HttpResponse(json.dumps(data))
@@ -43,7 +43,7 @@ def upload(request):
             response['Access-Control-Allow-Origin'] = '*'
             response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
             return response 
-	return HttpResponse(json.dumps({'error post': 'error'}))
+        return HttpResponse(json.dumps({'error post': 'error'}))
     else :
        #用于验证文件断开之后，文件在服务端的大小，一般情况下，第一次上传，都会先进行get,得到确切的文件大小后，客户端才继续上传
 
@@ -51,7 +51,7 @@ def upload(request):
         size = request.GET.get('size',0)
         fileName = request.GET.get('name','')
         if token == '111':
-	    return HttpResponse(json.dumps({'error get': 'file has existed'}))
+	        return HttpResponse(json.dumps({'error get': 'file has existed'}))
         if has_token(token):
             fileTemp = handle_file(token,fileName)
             fileTemp.seek(0,2)
@@ -60,7 +60,7 @@ def upload(request):
             data ={'start':start, 'success':True, 'message':''}
             return HttpResponse(json.dumps(data))
         else :
-	    return HttpResponse(json.dumps({'error get ': 'error'}))
+	        return HttpResponse(json.dumps({'error get ': 'error'}))
 
 ''' 创建文件'''
 def handle_file(token, filename):
@@ -76,12 +76,12 @@ def get_token(request):
         name = request.GET.get('name', '')
         size = request.GET.get('size', 0)
         mytoken = hash(name + size)
-	if not has_token(mytoken):
+    if not has_token(mytoken):
             obj = models.filetoken(token = mytoken )
             obj.save()
             data = { 'name':name, 'size':size, 'token':mytoken, 'success':True, 'message':''}
             return HttpResponse(json.dumps(data))
-        else:
+    else:
             data = { 'name':name, 'size':size, 'token':'111', 'success':False, 'message':'file has existed'}
             return HttpResponse(json.dumps(data))
 
@@ -95,6 +95,9 @@ def has_token(token):
             return True 
     return False
 
+
+def video(requst):
+    return render(requst,'car.html')
 
 ''' ----------------------分割线-------------------------'''
 def index(request):

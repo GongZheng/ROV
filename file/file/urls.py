@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^upload2/', filetest.upload2),
     url(r'^tk', filetest.get_token),
     url(r'^file', filetest.file_index),
-
+    url(r'^video', filetest.video),
 ]
