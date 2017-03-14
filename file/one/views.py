@@ -97,7 +97,27 @@ def has_token(token):
 
 
 def video(requst):
+    address =  requst.META['REMOTE_ADDR']
+    strone = '''m=video 8000 RTP/AVP 96  
+a=rtpmap:96 H264  
+a=framerate:15  
+c=IN IP4 '''+address+''' 
+'''
+    handle_video_file(strone,'0')   
+    
+    strtwo = '''m=video 8888 RTP/AVP 96  
+a=rtpmap:96 H264  
+a=framerate:15  
+c=IN IP4 '''+address+''' 
+'''
+    handle_video_file(strtwo,'1')   
     return render(requst,'car.html')
+
+def handle_video_file(str,index):
+    with open('one/static/js/' + 'video'+index+'.sdp', 'w') as destination:
+        destination.write(str)
+
+
 
 ''' ----------------------分割线-------------------------'''
 def index(request):
