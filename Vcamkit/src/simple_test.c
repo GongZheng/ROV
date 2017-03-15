@@ -22,8 +22,8 @@ U32 ofmt = V4L2_PIX_FMT_YUV420;
 char *deviceOne = "/dev/video0";
 char *deviceTwo = "/dev/video1";
 
-char *oneIp = "192.168.1.176";
-char *twoIp = "192.168.1.176";
+char oneIp[24];
+char twoIp[24];
 int onePort = 8888;
 int twoPort = 8000;
 
@@ -306,10 +306,21 @@ int openOne()
 	net_close(nethandleTwo);
 	return 0;
 }
-
-
-int main()
+int strcopy(char str1[],char str2[])
 {
+   int length = strlen(str2);
+   int i = 0;
+   for( i=0;i<=length;i++)str1[i]=str2[i];
+   return 0;
+}
+
+int main(int argc,char *argv[])
+{
+        
+        strcopy(oneIp,argv[1]);
+        //twoIp = argv[0];
+        printf("     ------   %s\n",oneIp);
+        strcopy(twoIp,argv[1]);
 	openOne();
 	return 0;
 }
