@@ -118,6 +118,22 @@ def handle_video_file(str,index):
         destination.write(str)
 
 
+'''WIFI 设置'''
+def wifi(request):
+    return render(request, 'wificonfig.html')
+
+def settingwifi(request):
+    if request.method == 'POST':
+        account = request.POST.get('account','')
+        pwd = request.POST.get('password','')
+        str = ' network={  ssid=\"' + account + '\" psk=\"' + pwd + '\"}'
+	print  str
+	with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'a') as destination:
+            destination.write(str)
+        return HttpResponse("successful")
+    else :
+        return HttpResponse("error to set wifi configuration")
+
 
 ''' ----------------------分割线-------------------------'''
 def index(request):

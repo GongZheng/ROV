@@ -25,4 +25,6 @@ urlpatterns = [
     url(r'^tk', filetest.get_token),
     url(r'^file', filetest.file_index),
     url(r'^video', filetest.video),
+    url(r'^wificonfig', filetest.wifi),
+    url(r'^settingwifi', filetest.settingwifi),
 ]
