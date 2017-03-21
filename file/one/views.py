@@ -110,11 +110,14 @@ a=rtpmap:96 H264
 a=framerate:15  
 c=IN IP4 '''+address+''' 
 '''
-    handle_video_file(strtwo,'1')   
+    handle_video_file(strtwo,'1')
+    caraddress = requst.META['HTTP_HOST'].split(':')[0]
+    with open('/home/pi/ROV/file/one/static/js/ip.js','w') as de:
+        de.write("globalip =\'"+caraddress + ":8088\' ")
     return render(requst,'car.html')
 
 def handle_video_file(str,index):
-    with open('one/static/js/' + 'video'+index+'.sdp', 'w') as destination:
+    with open('/home/pi/ROV/file/one/static/js/' + 'video'+index+'.sdp', 'w') as destination:
         destination.write(str)
 
 
@@ -130,6 +133,7 @@ def settingwifi(request):
 	print  str
 	with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'a') as destination:
             destination.write(str)
+            destination.close()
         return HttpResponse("successful")
     else :
         return HttpResponse("error to set wifi configuration")

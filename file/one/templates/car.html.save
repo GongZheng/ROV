@@ -32,12 +32,13 @@
 				 background:url("/static/css/img/control.png");
 			}
 		</style>
-                <script src="/static/js/ip.js"></script>
   		<script src="/static/js/modernizr.custom.js"></script>
   		<script src="/static/js/jquery.js"></script>
-  		<script type="text/javascript">
+                <script src="/static/js/ip.js">
 		    var v = 50;
-		    ip=globalip;
+                    ip = 192.168.1.169:8088;
+                    alert(
+ip);
 		    function aka(value){
 		    	v=value;
 		    	var showspeed=document.getElementById ("showspeed");
@@ -187,7 +188,7 @@
 
 			/*
 			var vlc = document.getElementById("vlc");    
-	        var mrl="/static/js/video0.sdp";   
+	        var mrl="yue.mp4";   
 	        //将地址添加到播放列表    
 	        vlc.playlist.add(mrl);    
 	        //播放    
@@ -195,7 +196,7 @@
 	        vlc.audio.toggleMute()
 
 	        var vlc1 = document.getElementById("vlc1");    
-	        var mrl1="/static/js/video1.sdp";   
+	        var mrl1="yue.mp4";   
 	        //将地址添加到播放列表    
 	        vlc1.playlist.add(mrl1);    
 	        //播放    
