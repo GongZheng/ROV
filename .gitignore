@@ -1,1 +1,4 @@
 raspberry pi/lib
+PiVlcPlayer/build
+PiVlcPlayer/app/build
+PiVlcPlayer/vlcplayer/build
