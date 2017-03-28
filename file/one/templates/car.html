@@ -38,6 +38,7 @@
   		<script type="text/javascript">
 		    var v = 50;
 		    ip=globalip;
+		    vip = videoip;
 		    function aka(value){
 		    	v=value;
 		    	var showspeed=document.getElementById ("showspeed");
@@ -46,6 +47,7 @@
 
 		    function changip(ipaddress){
 		    	ip=ipaddress;
+		    	vip = ipaddress;
 		    }
 		    function aa(v,a) {
 		        $.ajax({
@@ -64,6 +66,22 @@
 		        });
 		    }
 
+	        function videoshot_record(op) {
+		        $.ajax({
+		            url: "http://"+vip+"/"+op,
+		            data: "",
+		            type: "get",
+		            processData: false,
+		            timeout: 15000,
+		            dataType: "text",   //not "json" we'll parse
+		            jsonp: "jsonpcallback",
+		            success: function(result,state) {
+		                //alert(result+":"+state);
+		                var showop=document.getElementById ("showop");
+		                showop.innerHTML = result;
+		            }
+		        });
+		    }
 		    document.onkeydown = chang_page;
 		    document.onkeyup = stop;
 		    function chang_page(e) {
@@ -167,7 +185,9 @@
 							</table>
 						</div>
 						<div>
-							<input type=button value="截图" onclick='snapshot()'>
+							<input type=button value="截图到本地" onclick='snapshot()'>
+							<input class="b" id="snapShot" type="button" value="截图" onmousedown="videoshot_record('snapShot')"/>
+        					<input class="b" id="snapShot" type="button" value="录像" onmousedown="videoshot_record('record')"/>
 						</div>
 						</section>
 						<section id="section-linetriangle-2"><iframe src="http://192.168.1.169:8080/file" width="100%" frameborder="0"></iframe></section>

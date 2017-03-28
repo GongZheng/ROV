@@ -28,4 +28,5 @@
 #include "camkit/network.h"
 #include "camkit/timestamp.h"
 #include "camkit/rtmp_send.h"
+#include "camkit/simple_image.h"
 #endif

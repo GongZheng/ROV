@@ -1,0 +1,14 @@
+/usr/local/include/camkit.h
+/usr/local/include/camkit/capture.h
+/usr/local/include/camkit/comdef.h
+/usr/local/include/camkit/config.h
+/usr/local/include/camkit/convert.h
+/usr/local/include/camkit/encode.h
+/usr/local/include/camkit/network.h
+/usr/local/include/camkit/pack.h
+/usr/local/include/camkit/timestamp.h
+/usr/local/include/camkit/config.h
+/usr/local/lib/libcamkit.so.0.2
+/usr/local/lib/libcamkit.so.0
+/usr/local/lib/libcamkit.so
+/usr/local/bin/cktool

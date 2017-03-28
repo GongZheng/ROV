@@ -1,5 +1,5 @@
 # build library
-SET(COM_SRC v4l_capture.c rtp_pack.c network.c timestamp.c  rtmp_send.c)
+SET(COM_SRC v4l_capture.c rtp_pack.c network.c timestamp.c  rtmp_send.c simple_image.c)
 SET (CK_SRC soft_convert.c omx_encode.c ${COM_SRC})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/third-party/ilclient)   # ilclient headers
 AUX_SOURCE_DIRECTORY(${PROJECT_SOURCE_DIR}/third-party/ilclient/ ILCLIENT_SRC) # include ilclient sources

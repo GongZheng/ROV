@@ -113,7 +113,8 @@ c=IN IP4 '''+address+'''
     handle_video_file(strtwo,'1')
     caraddress = requst.META['HTTP_HOST'].split(':')[0]
     with open('/home/pi/ROV/file/one/static/js/ip.js','w') as de:
-        de.write("globalip =\'"+caraddress + ":8088\' ")
+        de.write("globalip =\'"+caraddress + ":8088\'\n ")
+        de.write("videoip = \'"+caraddress + ":8888\' ")
     return render(requst,'car.html')
 
 def handle_video_file(str,index):
