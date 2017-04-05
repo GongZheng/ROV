@@ -21,7 +21,7 @@
 //#define WIDTH 640
 //#define HEIGHT 480
 #define FRAMERATE 15
-#define recordMaxtime 10 //视频录制最长时间
+#define recordMaxtime  999999999//视频录制最长时间
 
 //http监听部分全局变量和函数开始
 #define PORT 8888
@@ -36,7 +36,7 @@ FILE *dumpfileOne,*dumpfileTwo;
 time_t startTime;
 int snapShot;
 int record;
-
+char fileaim[1024];
 typedef struct doc_type{
         char *key;
         char *value;
@@ -122,17 +122,6 @@ void *httplisten(){
             	}
             	sprintf(buff,"%s\n","截图成功" );
             	printf("\r%s\n","snapShot had finished!");
-            }else if (strcmp("/record",token)==0)
-            {
-            	if (record!=1){
-            		pthread_mutex_lock(&mut);
-	            	record = 1;
-	                pthread_mutex_unlock(&mut);
-	            	sprintf(buff,"视频将录制%d秒\n",recordMaxtime);
-            	}else{
-            		int remainTime = recordMaxtime - (int)time((time_t*)NULL)+(int)startTime;
-            		sprintf(buff,"视频正在录制，剩余%d秒\n",remainTime);
-            	}
             }else{
             	sprintf(buff,"%s\n",token);
             }
@@ -351,13 +340,13 @@ int *openOne()
 			char picname[108];
 			if (flag==1&&both==0)
 			{
-				sprintf(picname,"%s_pic0.bmp",str_time);
+				sprintf(picname,"%s/%s_pic0.bmp",fileaim,str_time);
 				capture_bmp(cap_buf,cap_len,picname);
 				both++;
 			}
 			if (flag==0&&both==1)
 			{
-				sprintf(picname,"%s_pic1.bmp",str_time);
+				sprintf(picname,"%s/%s_pic1.bmp",fileaim,str_time);
 				capture_bmp(cap_buf,cap_len,picname);
 				pthread_mutex_lock(&mut);
 	        	snapShot=0;
@@ -424,8 +413,8 @@ int *openOne()
 			//printf("%s\n", str_time);
 			char fileOnename[108];
 			char fileTwoname[108];
-			sprintf(fileOnename,"%s_cam0.h264",str_time);
-			sprintf(fileTwoname,"%s_cam1.h264",str_time);
+			sprintf(fileOnename,"%s/%s_cam0.h264",fileaim,str_time);
+			sprintf(fileTwoname,"%s/%s_cam1.h264",fileaim,str_time);
 			dumpfileOne = fopen(fileOnename,"wb");
 			dumpfileTwo = fopen(fileTwoname,"wb");
 			printf("%s recording...\n",fileOnename);
@@ -550,6 +539,13 @@ int main(int argc,char *argv[])
 
     strcopy(twoIp,argv[1]);
 
+    if(strcmp("1",argv[2])==0)
+    	record = 1;
+    else
+    	record = 0;
+
+    if(strlen(argv[3])!=0)
+    	strcpy(fileaim,argv[3]);
 	pthread_mutex_init(&mut,NULL);
     printf("PiCam start....\n");
     thread_create();
