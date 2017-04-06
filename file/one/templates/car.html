@@ -10,8 +10,8 @@
 		<link rel="stylesheet" type="text/css" href="/static/css/tabstyles.css" />
 		<style type="text/css">
 			object embed{
-				width: 640px;
-				height: 480px;
+				width: 352px;
+				height: 288px;
 				margin:0;
 				padding:0; 
 				border:0;
@@ -32,12 +32,13 @@
 				 background:url("/static/css/img/control.png");
 			}
 		</style>
-                <script src="/static/js/ip.js"></script>
+        <script src="/static/js/ip.js"></script>
   		<script src="/static/js/modernizr.custom.js"></script>
   		<script src="/static/js/jquery.js"></script>
   		<script type="text/javascript">
 		    var v = 50;
 		    ip=globalip;
+		    vip = videoip;
 		    function aka(value){
 		    	v=value;
 		    	var showspeed=document.getElementById ("showspeed");
@@ -46,6 +47,7 @@
 
 		    function changip(ipaddress){
 		    	ip=ipaddress;
+		    	vip = ipaddress;
 		    }
 		    function aa(v,a) {
 		        $.ajax({
@@ -64,6 +66,22 @@
 		        });
 		    }
 
+	        function videoshot_record(op) {
+		        $.ajax({
+		            url: "http://"+vip+"/"+op,
+		            data: "",
+		            type: "get",
+		            processData: false,
+		            timeout: 15000,
+		            dataType: "text",   //not "json" we'll parse
+		            jsonp: "jsonpcallback",
+		            success: function(result,state) {
+		                //alert(result+":"+state);
+		                var showop=document.getElementById ("showop");
+		                showop.innerHTML = result;
+		            }
+		        });
+		    }
 		    document.onkeydown = chang_page;
 		    document.onkeyup = stop;
 		    function chang_page(e) {
@@ -94,8 +112,15 @@
 		    	aa(0,0);
 		    }
 		    $(window).ready(function(){
+		    	if (confirm("是否开启视频录制？")){
+		    		startipcam("1");
+		    		alert("视频将会录制在pi中,请务必在关闭页面前关闭视频流");
+		    	}else{
+		    		startipcam("0");
+		    		alert("视频将不会录制，请务必在关闭页面前关闭视频流")
+		    	}
 		    	var maxWidth = $(window).width()/2*0.9;
-		    	var maxHeight = maxWidth*0.75;
+		    	var maxHeight = maxWidth*288/352;
 		    	$("embed").width(maxWidth);
 		    	$("object").width(maxWidth);
 		    	$("embed").height(maxHeight);
@@ -103,18 +128,70 @@
 			});
 		    $(window).resize(function(){
 		    	var maxWidth = $(window).width()/2*0.9;
-		    	var maxHeight = maxWidth*0.75;
+		    	var maxHeight = maxWidth*288/352;
 		    	$("embed").width(maxWidth);
 		    	$("object").width(maxWidth);
 		    	$("embed").height(maxHeight);
 		    	$("object").height(maxHeight);
 			});
+
+			
+			function startipcam(flag){
+				$.ajax({
+		            url: "/startpicam",
+		            data: "record="+flag,
+		            type: "get",
+		            processData: false,
+		            timeout: 15000,
+		            dataType: "text",   //not "json" we'll parse
+		            jsonp: "jsonpcallback",
+		            success: function(result,state) {
+		                //alert(result+":"+state);
+		                var showop=document.getElementById ("showop");
+		                showop.innerHTML = result;
+		            }
+		        });
+			}
+
+			function closepicam(){
+				$.ajax({
+		            url: "/closepicam",
+		            data: "",
+		            type: "get",
+		            processData: false,
+		            timeout: 15000,
+		            dataType: "text",   //not "json" we'll parse
+		            jsonp: "jsonpcallback",
+		            success: function(result,state) {
+		                alert(result+":"+state);
+		                var showop=document.getElementById ("showop");
+		                showop.innerHTML = result;
+		            }
+		        });
+			}
+
+			function carmove(){
+				$.ajax({
+		            url: "/carmove",
+		            data: "",
+		            type: "get",
+		            processData: false,
+		            timeout: 15000,
+		            dataType: "text",   //not "json" we'll parse
+		            jsonp: "jsonpcallback",
+		            success: function(result,state) {
+		                alert(result+":"+state);
+		                var showop=document.getElementById ("showop");
+		                showop.innerHTML = result;
+		            }
+		        });
+			}
 		</script>
 	</head>
 	<body>
 		<div class="container">
 			<div >
-				<object classid="clsid:E23FE9C6-778E-49D4-B537-38FCDE4887D8" codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab" style="margin-left:5%" 
+				<object classid="clsid:E23FE9C6-778E-49D4-B537-38FCDE4887D8" codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab" " 
 		        events="True" id="vlc2" controls="pausebutton">     
 		        <param name="MRL"/>     
 		        <param name="ShowDisplay" value="True" />     
@@ -167,10 +244,13 @@
 							</table>
 						</div>
 						<div>
-							<input type=button value="截图" onclick='snapshot()'>
+							<input type=button value="截图到本地" onclick='snapshot()'>
+							<input class="b" id="snapShot" type="button" value="截图" onmousedown="videoshot_record('snapShot')"/>
+        					<!--<input class="b" id="snapShot" type="button" value="录像" onmousedown="videoshot_record('record')"/>-->
+        					<input class="b" id="stop" type="button" value="关闭摄像头" onmousedown="closepicam()"/>
 						</div>
 						</section>
-						<section id="section-linetriangle-2"><iframe src="http://192.168.1.169:8080/file" width="100%" frameborder="0"></iframe></section>
+						<section id="section-linetriangle-2"><iframe src="/file" width="100%" frameborder="0"></iframe></section>
 					</div><!-- /content -->
 				</div><!-- /tabs -->
 			</section>

@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^video', filetest.video),
     url(r'^wificonfig', filetest.wifi),
     url(r'^settingwifi', filetest.settingwifi),
+    url(r'startpicam',filetest.startpicam),
+    url(r'closepicam',filetest.closepicam),
 ]

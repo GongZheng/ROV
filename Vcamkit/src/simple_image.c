@@ -10,8 +10,8 @@
 
 //#define WIDTH 352
 //#define HEIGHT 288
-#define WIDTH 640
-#define HEIGHT 480
+#define WIDTH 352
+#define HEIGHT 288
 #define FRAMERATE 15
 
 #define CAPTURE_FILE "frame_yuyv_new.jpg"
@@ -244,9 +244,9 @@ void move_noise(unsigned char *newBuf)
 
 
 
-void store_bmp(unsigned char *newBuf,int n_len)
+void store_bmp(unsigned char *newBuf,int n_len,char *filename)
 {
-    FILE *fp1 = fopen(CAPTURE_RGB_FILE, "wb");
+    FILE *fp1 = fopen(filename, "wb");
     if (fp1 < 0) {
         printf("open frame data file failed\n");
         return;
@@ -255,10 +255,20 @@ void store_bmp(unsigned char *newBuf,int n_len)
     fwrite(&bih,sizeof(bih),1,fp1);
     fwrite(newBuf, 1, n_len, fp1);
     fclose(fp1);
-    printf("Change one frame saved in %s\n", CAPTURE_RGB_FILE);
+    printf("Change one frame saved in %s\n", filename);
     return;
 }
 
+void capture_bmp(void *cap_buf,int cap_len,char *filename){
+    int n_len;
+    unsigned char *newBuf;
+    n_len = cap_len*3/2;
+    newBuf=calloc((unsigned int)n_len,sizeof(unsigned char));
+    yuyv2rgb(newBuf,cap_buf,cap_len);//还是这个采集的图片的效果比较好
+    move_noise(newBuf);
+    create_bmp_header();
+    store_bmp(newBuf,n_len,filename);
+}
 
 int openOne()
 {
@@ -291,15 +301,7 @@ int openOne()
 
 	capture_get_data(caphandle, &cap_buf, &cap_len);
  	store_yuyv(&cap_buf, cap_len);
-	int n_len;
-	unsigned char *newBuf;
-    n_len = cap_len*3/2;
-    newBuf=calloc((unsigned int)n_len,sizeof(unsigned char));
-
-    yuyv2rgb(newBuf,cap_buf,cap_len);//还是这个采集的图片的效果比较好
-   	move_noise(newBuf);
-  	create_bmp_header();
-    store_bmp(newBuf,n_len);
+    capture_bmp(cap_buf,cap_len,CAPTURE_RGB_FILE);
 	capture_stop(caphandleOne);
 
 	return 0;

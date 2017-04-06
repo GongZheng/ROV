@@ -18,15 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef CAMKIT_H
-#define CAMKIT_H
-#include "camkit/config.h"
-#include "camkit/capture.h"
-#include "camkit/convert.h"
-#include "camkit/encode.h"
-#include "camkit/pack.h"
-#include "camkit/network.h"
-#include "camkit/timestamp.h"
-#include "camkit/rtmp_send.h"
-#include "camkit/simple_image.h"
+#ifndef CK_CONFIGURE
+#define CK_CONFIGURE
+
+const char version[16] = "0.2.0";     /**< the version string */
+
 #endif

@@ -44,8 +44,7 @@ IF (LIBRTMP_FOUND)
     INCLUDE_DIRECTORIES(${LIBRTMP_INCLUDE_DIRS})
     SET (LIBS ${LIBS} ${LIBRTMP_LIBRARIES})
 ENDIF()
-    
-    
+
 # include directory
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include/)
 
@@ -60,6 +59,7 @@ SET(CK_HDRS
     ${PROJECT_SOURCE_DIR}/include/camkit/network.h 
     ${PROJECT_SOURCE_DIR}/include/camkit/pack.h
     ${PROJECT_SOURCE_DIR}/include/camkit/timestamp.h 
+    ${PROJECT_SOURCE_DIR}/include/camkit/simple_image.h
     )
 
 # configuration file
