@@ -7,7 +7,19 @@ import uuid
 import json
 import models
 import numpy
+import socket
+import fcntl
+import struct
 @csrf_exempt
+ 
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
 def upload(request):
   #  post 方法为文件流传入 断点续传大小为10MB，即大于10MB，上传进行文件切割
     if request.method == 'POST':
@@ -101,7 +113,8 @@ def startpicam(requst):
     if requst.method == 'GET':
         record = requst.GET.get('record','0')
     print record
-    p = os.system('~/ROV/Vcamkit/build/src/simple_test '+address+' '+record +' '+'./upload')
+    s = os.system('killall simple_test')
+    p = os.system('/home/pi/ROV/Vcamkit/build/src/simple_test '+address+' '+record +' '+'/home/pi/ROV/file/upload')
     return HttpResponse("摄像头已开启！"+address)
 
 '''关闭摄像头'''
@@ -109,6 +122,7 @@ def closepicam(requst):
     p = os.system('killall simple_test')
     return HttpResponse("摄像头已关闭！")
 
+    
 def video(requst):
     address =  requst.META['REMOTE_ADDR']
     strone = '''m=video 8000 RTP/AVP 96  
@@ -143,15 +157,27 @@ def settingwifi(request):
     if request.method == 'POST':
         account = request.POST.get('account','')
         pwd = request.POST.get('password','')
-        str = ' network={  ssid=\"' + account + '\" psk=\"' + pwd + '\"}'
+        str = '''
+network={
+ssid="'''+account+'''"
+scan_ssid=1
+psk="'''+pwd+'''"
+}
+'''
 	print  str
 	with open('/etc/wpa_supplicant/wpa_supplicant.conf', 'a') as destination:
             destination.write(str)
             destination.close()
+        p = os.system('sudo ifdown wlan1')
+        q = os.system('sudo ifup wlan1')
         return HttpResponse("successful")
     else :
         return HttpResponse("error to set wifi configuration")
 
+
+def getip(request):
+	ip = get_ip_address("wlan1")
+	return HttpResponse(ip)
 
 ''' ----------------------分割线-------------------------'''
 def index(request):

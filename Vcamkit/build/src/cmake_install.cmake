@@ -32,11 +32,11 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
   set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE FILE FILES "/home/pi/ROV/Vcamkit/include/camkit.h")
 endif()
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/camkit" TYPE FILE FILES
     "/home/pi/ROV/Vcamkit/include/camkit/capture.h"
     "/home/pi/ROV/Vcamkit/include/camkit/comdef.h"
@@ -51,7 +51,7 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMP
     )
 endif()
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   foreach(file
       "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libcamkit.so.0.2"
       "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libcamkit.so.0"
@@ -76,10 +76,8 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMP
       )
     if(EXISTS "${file}" AND
        NOT IS_SYMLINK "${file}")
-      file(RPATH_CHANGE
-           FILE "${file}"
-           OLD_RPATH "/opt/vc/lib:/usr/local/lib:"
-           NEW_RPATH "")
+      file(RPATH_REMOVE
+           FILE "${file}")
       if(CMAKE_INSTALL_DO_STRIP)
         execute_process(COMMAND "/usr/bin/strip" "${file}")
       endif()
@@ -87,7 +85,7 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMP
   endforeach()
 endif()
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cktool" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cktool")
     file(RPATH_CHECK
@@ -97,10 +95,8 @@ if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMP
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/pi/ROV/Vcamkit/build/src/cktool")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cktool" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cktool")
-    file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cktool"
-         OLD_RPATH "/home/pi/ROV/Vcamkit/build/src:/opt/vc/lib:/usr/local/lib:"
-         NEW_RPATH "")
+    file(RPATH_REMOVE
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cktool")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cktool")
     endif()

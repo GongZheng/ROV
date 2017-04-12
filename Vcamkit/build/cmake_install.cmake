@@ -44,7 +44,7 @@ else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
-       "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/pi/ROV/Vcamkit/build/${CMAKE_INSTALL_MANIFEST}"
-     "${CMAKE_INSTALL_MANIFEST_CONTENT}")
+file(WRITE "/home/pi/ROV/Vcamkit/build/${CMAKE_INSTALL_MANIFEST}" "")
+foreach(file ${CMAKE_INSTALL_MANIFEST_FILES})
+  file(APPEND "/home/pi/ROV/Vcamkit/build/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+endforeach()

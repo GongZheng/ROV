@@ -664,10 +664,6 @@ OMX_Image.h
 OMX_Other.h
 /opt/vc/include/interface/vmcs_host/khronos/IL/OMX_Other.h
 
-/opt/vc/include/interface/vmcs_host/linux/vchost_config.h
-interface/vcos/vcos.h
-/opt/vc/include/interface/vmcs_host/linux/interface/vcos/vcos.h
-
 /opt/vc/include/interface/vmcs_host/vc_cec.h
 
 /opt/vc/include/interface/vmcs_host/vc_cecservice.h
@@ -777,12 +773,6 @@ interface/vmcs_host/vc_fileservice_defs.h
 /opt/vc/include/interface/vmcs_host/interface/vmcs_host/vc_fileservice_defs.h
 interface/vchi/vchi.h
 /opt/vc/include/interface/vmcs_host/interface/vchi/vchi.h
-
-/opt/vc/include/interface/vmcs_host/vchost_platform_config.h
-linux/vchost_config.h
-/opt/vc/include/interface/vmcs_host/linux/vchost_config.h
-vchost_config.h
-/opt/vc/include/interface/vmcs_host/vchost_config.h
 
 /opt/vc/include/interface/vmcs_host/vcilcs.h
 interface/vmcs_host/khronos/IL/OMX_Component.h
