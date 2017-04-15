@@ -2,12 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.scnu.pi.pivlcplayer">
 
+    <uses-sdk
+        android:minSdkVersion="3"
+        android:targetSdkVersion="8" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 允许读取手机状态的权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 允许程序获取当前WiFi接入的状态以及WLAN热点的信息 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 允许程序获取网络信息状态，如当前的网络连接是否有效 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 允许程序写入外部存储,如SD卡上写文件 -->
@@ -18,11 +23,6 @@
 
     <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-
-    <uses-sdk
-
-        android:minSdkVersion="3"
-        android:targetSdkVersion="8" />
 
     <application
         android:allowBackup="true"
@@ -41,11 +41,14 @@
         </activity>
         <activity
             android:name=".PlayerActivity"
-            android:screenOrientation="landscape"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:screenOrientation="landscape" />
+        <activity android:name=".WifiConfigActivity" />
+        <activity android:name=".SetWifiActivity" />
+        <activity android:name=".Main3Activity"></activity>
+
+
     </application>
+
+    <uses-feature android:name="android.hardware.wifi" />
 
 </manifest>

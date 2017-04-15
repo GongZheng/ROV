@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^settingwifi', filetest.settingwifi),
     url(r'startpicam',filetest.startpicam),
     url(r'closepicam',filetest.closepicam),
+    url(r'getip',filetest.getip),
 ]

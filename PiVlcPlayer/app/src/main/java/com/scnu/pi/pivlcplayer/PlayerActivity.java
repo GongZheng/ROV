@@ -9,13 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.scnu.pi.pivlcplayer.ui.PiVideo;
 
 import java.io.BufferedInputStream;
@@ -34,7 +29,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class PlayerActivity extends AppCompatActivity implements  View.OnTouchListener {
     private static String SDP_CONFIGURATION = "sdp_configuration";
     private static String KEY_IP = "ip";
     private static int PORT_ONE = 8888;
@@ -46,31 +41,45 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private static ExecutorService executorService = Executors.newFixedThreadPool(5);
     private int option = 0;
     private int value = 0;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        piVideo = (PiVideo) findViewById(R.id.player_video);
-        piVideo.playVideo(getVideoPath(ip, PORT_ONE), getVideoPath(ip, PORT_TWO));
+        findViewById(R.id.iv_back).setOnTouchListener(this);
+        findViewById(R.id.iv_back_left).setOnTouchListener(this);
+        findViewById(R.id.iv_back_right).setOnTouchListener(this);
         findViewById(R.id.iv_forward).setOnTouchListener(this);
         findViewById(R.id.iv_forward_left).setOnTouchListener(this);
         findViewById(R.id.iv_forward_right).setOnTouchListener(this);
-        findViewById(R.id.iv_back_left).setOnTouchListener(this);
-        findViewById(R.id.iv_back_right).setOnTouchListener(this);
-        findViewById(R.id.iv_back).setOnTouchListener(this);
-        findViewById(R.id.iv_snapshot).setOnTouchListener(this);
+        piVideo = (PiVideo) findViewById(R.id.player_video);
+        piVideo.playVideo(getVideoPath(ip, PORT_ONE), getVideoPath(ip, PORT_TWO));
         Intent intent = getIntent();
         Pi_IP = intent.getStringExtra("Pi_IP");
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        Thread th = new Thread(){
+            public void run(){
+                StringBuilder buf = new StringBuilder("http://" + Pi_IP + ":8080" + "/startpicam?record=0");
+                URL url = null;
+                HttpURLConnection conn = null;
+                try {
+                    url = new URL(buf.toString());
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setConnectTimeout(5000);
+                    conn.setRequestMethod("GET");
+                    conn.connect();
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + buf);
+                    conn.getResponseCode();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
+                }
+            }
+        };
+        th.start();
     }
 
     /**
@@ -118,9 +127,31 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    @Override
+
     public void onClick(View v) {
-        moving(v);
+        Thread th = new Thread(){
+            public void run(){
+                StringBuilder buf = new StringBuilder("http://" + Pi_IP + ":8888" + "/snapShot");
+                URL url = null;
+                HttpURLConnection conn = null;
+                try {
+                    url = new URL(buf.toString());
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setConnectTimeout(5000);
+                    conn.setRequestMethod("GET");
+                    conn.connect();
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + buf);
+                    conn.getResponseCode();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
+                }
+            }
+        };
+        th.start();
     }
 
     private void moving(View v) {
@@ -191,92 +222,13 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                /*cancelMoving = false;
-                executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (!cancelMoving) {
-                            try {
-                                Thread.sleep(200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            moving(v);
-                        }
-                    }
-                });*/
-                if (v.getId()!=R.id.iv_snapshot){
                 moving(v);
-                }else{
-                    Thread th = new Thread(){
-                        public void run(){
-                    StringBuilder buf = new StringBuilder("http://" + Pi_IP + ":8888" + "/snapShot");
-                    URL url = null;
-                    HttpURLConnection conn = null;
-                    try {
-                        url = new URL(buf.toString());
-                        conn = (HttpURLConnection) url.openConnection();
-                        conn.setConnectTimeout(5000);
-                        conn.setRequestMethod("GET");
-                        conn.connect();
-                        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + buf);
-                        conn.getResponseCode();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (conn != null) {
-                            conn.disconnect();
-                        }
-                    }
-                    }
-                    };
-                    th.start();
-                }
                 break;
             case MotionEvent.ACTION_UP:
-                //cancelMoving = true;
-                if(v.getId()!=R.id.iv_snapshot)
-                {moving(null);}
+                moving(null);
                 break;
         }
 
         return false;
-    }
-
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Player Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 }
