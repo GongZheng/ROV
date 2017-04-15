@@ -18,7 +18,7 @@
 
         <ImageView
             android:clickable="true"
-
+            android:onClick="onClick"
             android:id="@+id/iv_forward_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
 
         <ImageView
             android:clickable="true"
-
+            android:onClick="onClick"
             android:id="@+id/iv_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
 
         <ImageView
             android:clickable="true"
-
+            android:onClick="onClick"
             android:id="@+id/iv_forward_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
 
         <ImageView
             android:clickable="true"
-
+            android:onClick="onClick"
             android:id="@+id/iv_back_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,6 +71,7 @@
             android:src="@drawable/bg_arrow7" />
 
         <ImageView
+            android:onClick="onClick"
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +84,7 @@
 
         <ImageView
             android:clickable="true"
-
+            android:onClick="onClick"
             android:id="@+id/iv_back_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,6 +105,7 @@
         android:layout_gravity="right|bottom"
         android:orientation="vertical">
         <Button
+            android:onClick="onClick"
             android:text="截图"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

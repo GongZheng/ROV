@@ -1,0 +1,6 @@
+/home/pi/ROV/Vcamkit/build/src/CMakeFiles/camkit.dir
+/home/pi/ROV/Vcamkit/build/src/CMakeFiles/cktool.dir
+/home/pi/ROV/Vcamkit/build/src/CMakeFiles/simple_demo.dir
+/home/pi/ROV/Vcamkit/build/src/CMakeFiles/simple_image.dir
+/home/pi/ROV/Vcamkit/build/src/CMakeFiles/simple_rtmp.dir
+/home/pi/ROV/Vcamkit/build/src/CMakeFiles/simple_test.dir

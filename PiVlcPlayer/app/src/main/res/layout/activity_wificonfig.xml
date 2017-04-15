@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.scnu.pi.pivlcplayer.WifiConfigActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="请输入AP的信息" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/text_WIFIName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/wifi_account"
+            android:layout_alignBottom="@+id/wifi_account"
+            android:layout_toLeftOf="@+id/wifi_account"
+            android:layout_toStartOf="@+id/wifi_account"
+            android:text="WIFI名称："
+            android:textSize="@dimen/activity_horizontal_margin" />
+
+        <Spinner
+            android:id="@+id/sp_account"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/text_WifiPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/wifi_password"
+            android:layout_alignBottom="@+id/wifi_password"
+            android:layout_toLeftOf="@+id/wifi_password"
+            android:layout_toStartOf="@+id/wifi_password"
+            android:text="WIFI密码："
+            android:textSize="@dimen/activity_vertical_margin" />
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/wifi_account"
+            android:layout_alignStart="@+id/wifi_account"
+            android:layout_below="@+id/wifi_account"
+            android:layout_weight="1"
+            android:inputType="textPassword" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_WifiSet"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wifi_password"
+        android:layout_alignStart="@+id/wifi_password"
+        android:layout_below="@+id/wifi_password"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:text="设置WIFI" />
+
+</LinearLayout>

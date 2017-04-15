@@ -14,11 +14,13 @@ import struct
  
 def get_ip_address(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    return socket.inet_ntoa(fcntl.ioctl(
+    ip = socket.inet_ntoa(fcntl.ioctl(
         s.fileno(),
         0x8915,  # SIOCGIFADDR
         struct.pack('256s', ifname[:15])
     )[20:24])
+    s.close()
+    return ip
 
 def upload(request):
   #  post 方法为文件流传入 断点续传大小为10MB，即大于10MB，上传进行文件切割

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PiVlcPlayer</string>
+    <string name="title_activity_wificonfig">Wificonfig</string>
 </resources>
